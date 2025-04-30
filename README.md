@@ -37,11 +37,10 @@ Usaremos a abreviatura *SDM* para a expressão subcoleção disjunta máxima.  N
 **Exemplo** 
 A figura abaixo especifica uma coleção de intervalos e uma sdm da coleção.  A SDM é indicada pelos 1 do seu vetor característico X:
 
-```javascript
+
 s 4 6 13 4 2 6 7  9  1 3  9
 f 8 7 14 5 4 9 10 11 6 13 12
 X 0 1 1  0 1 0 0  1  0 0  0
-```
 
 É fácil verificar que a coleção de 4 intervalos definida por x é disjunta. Mas não é óbvio que ela seja máxima. Você tem certeza de que não existem 5 intervalos disjuntos dois a dois?
 
@@ -51,20 +50,20 @@ Nosso problema pode ser resolvido por um algoritmo guloso. Para descrever o algo
 
 Eis o esboço do algoritmo guloso. Ele recebe uma coleção S de intervalos e devolve uma sdm de S:
 
-```javascript
+
 X ← { }
 enquanto S ≠ { } faça
    i ← primeiro intervalo de S
    X ← X ∪ {i}
    S ← coleção dos intervalos posteriores a i
 devolva X
-```
+
 
 Antes de transformar esse esboço em pseudocódigo de nível mais baixo, convém exigir que os intervalos estejam em ordem crescente de término (Com isso, o primeiro intervalo é o de índice 1).
 
 O algoritmo supõe f<sub>1</sub> ≤ … ≤ f<sub>n</sub> e n ≥ 0 e devolve uma sdm da coleção de intervalos definida por *(s,f,n)*:
 
-```javascript
+
 SDM-Guloso (s, f, n)
 1   X ← { }
 2   i ← 1
@@ -75,11 +74,11 @@ SDM-Guloso (s, f, n)
 7              k ← k + 1
 8        i ← k
 9   devolva X
-```
+
 
 O código pode ser reescrito de maneira mais elegante:
 
-```javascript
+
 SDM-Guloso (s, f, n)
 1   f0 ← −∞
 2   X ← { }
@@ -89,7 +88,7 @@ SDM-Guloso (s, f, n)
 6              então X ← X ∪ {k}
 7                       i ← k
 8   devolva X
-```
+
 
 2) **Assim:**
 
