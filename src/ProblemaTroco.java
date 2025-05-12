@@ -62,5 +62,7 @@ public class ProblemaTroco {
         moedas.add(80);
         int n4 = 2294;
         System.out.println("Problema do troco: " + problemadoTroco(moedas, n4));
+
+        System.out.println("Complexidade Média:  2n -> O(n) ");
     }
 }
