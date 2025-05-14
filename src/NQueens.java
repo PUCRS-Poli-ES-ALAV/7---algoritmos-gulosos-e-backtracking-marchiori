@@ -1,9 +1,11 @@
 package src;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class NQueens {
+
+    static int contador;
 
     // Primeiramente, criaremos um metodo principal para criação da matriz resposta.
     // Após isso, criação de estrutura de dados para representar o tabuleiro. Iniciar da primeira posição.
@@ -17,33 +19,31 @@ public class NQueens {
         ArrayList<ArrayList<Integer>> resposta = new ArrayList<>();
         ArrayList<Integer> tabuleiro = new ArrayList<>();
 
+        contador = 0;
+
         // iniciar a resolução do ponto inicial do tabuleiro.
         backtracking(0, n, tabuleiro, resposta, 0, 0, 0);
 
         return resposta;
     }
 
-    public static boolean posicaoValida( int coluna, int n, int linha, int linhas, int diagEsq, int diagDir) {
+    public static boolean posicaoValida(int col, int n, int row, int linhas, int diagEsq, int diagDir) {
+        // linha ocupada
+        if (((linhas >> row) & 1) != 0) return false;
 
-        // Primeira exigência: Verificação se a linha está ocupada.
-        // Deslocamento de bits de linhas para a direita, verificando se o bit correspondente é 1.
-        boolean linhaLivre = ((linhas >> linha) & 1) == 0;
+        // diagonal esquerda (\)
+        if (((diagEsq >> (row + col)) & 1) != 0) return false;
 
-        // Segunda exigência: Verificação da diagonal esquerda.
-        // Deslocamento de bits igual a (linha + coluna) para verificar esta posição.
-        boolean diagonalEsquerdaLivre = !(((diagEsq >> (linha + coluna)) & 1) == 1);
+        // diagonal direita (/)
+        if (((diagDir >> (row - col + (n - 1))) & 1) != 0) return false;
 
-        // Terceira exigência: Verificação da diagonal direita.
-        // Deslocamento de bits igual a (linha - coluna + n) para verificar esta posição.
-        boolean diagonalDireitaLivre = ((diagDir >> (linha - coluna + n)) & 1) == 1;
-
-        // Retorno precisa seguir as três exigências para ser uma posição válida.
-        return !(linhaLivre && !diagonalEsquerdaLivre && !diagonalDireitaLivre);
-
+        return true;
     }
 
     public static void backtracking(int col, int n, ArrayList<Integer> tabuleiro, ArrayList<ArrayList<Integer>> resposta,
                              int linhas, int diagEsq, int diagDir) {
+
+        contador++;
 
         // Condição de parada: todas as rainhas estão posicionadas
         if (col == n) {
@@ -52,7 +52,7 @@ public class NQueens {
         }
 
         // PASSO 1: Tentar posicionar uma rainha em todos os elementos da coluna atual
-        for (int linha = 1; linha <= n; linha++) {
+        for (int linha = 0; linha < n; linha++) {
 
             // PASSO 1A: Verificar se a posição é válida
             if (posicaoValida(col, n, linha, linhas, diagEsq, diagDir)) {
@@ -71,8 +71,10 @@ public class NQueens {
                 // DIAGONAL DIREITA: a mesma lógica, mas há a subtração da linha e a soma do tamanho do tabuleiro.
 
                 // CHAMADA RECURSIVA PARA INSERÇÃO DO PRÓXIMO TERMO
-                backtracking(col+1, n, tabuleiro, resposta, linhas | (1 << linha),
-                        diagEsq | (1 << (col + linha)), diagDir | (1 << (col - linha + n)));
+                backtracking(col+1, n, tabuleiro, resposta,
+                        linhas | (1 << linha),
+                        diagEsq | (1 << (col + linha)),
+                        diagDir | (1 << (linha - col + (n - 1))));
 
                 // PASSO 1D: Caso a condição não seja suprida, remoção da rainha.
                 tabuleiro.removeLast();
@@ -82,20 +84,32 @@ public class NQueens {
     }
 
     public static void main(String[] args) {
-        int n = 4;
-        ArrayList<ArrayList<Integer>> resposta = NQueens.resolucao(n);
+        for (int n = 3; n <= 8; n++) {
+            System.out.println("\n---");
+            System.out.println("N-Queens com n = " + n);
+            long inicio = System.nanoTime();
 
-        if (resposta != null) {
-            for (ArrayList<Integer> solucao : resposta) {
-                System.out.print("--- SOLUÇÃO " + (resposta.indexOf(solucao) + 1) + " --- \n[" );
-                for (int i = 0; i < solucao.size(); i++) {
-                    System.out.print(solucao.get(i));
-                    if (i != n-1) System.out.print(" ");
+            ArrayList<ArrayList<Integer>> resposta = NQueens.resolucao(n);
+
+            long fim = System.nanoTime();
+            long tempoMicro = (fim - inicio) / 1_000;
+
+            if (resposta == null || resposta.isEmpty()) {
+                System.out.println("Sem soluções para n = " + n);
+            } else {
+                int count = 1;
+                for (ArrayList<Integer> solucao : resposta) {
+                    System.out.print("--- SOLUÇÃO " + count++ + " --- \n[");
+                    for (int i = 0; i < solucao.size(); i++) {
+                        System.out.print(solucao.get(i) + 1);
+                        if (i != solucao.size() - 1) System.out.print(" ");
+                    }
+                    System.out.println("]");
                 }
-                System.out.println("]");
             }
+
+            System.out.println("Iterações: " + contador);
+            System.out.println("Tempo: " + tempoMicro + "micros");
         }
-
-
     }
 }
