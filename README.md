@@ -107,3 +107,11 @@ O problema das N-rainhas consiste em encontrar uma combinação possível de N r
 1. Desenvolver uma aplicação que resolva o problema das n-rainhas, encontrando uma solução válida para o problema. Como entrada, o programa recebe um valor para n >= 2, e retorna a disposição das rainhas no tabuleiro. Utilize uma estratégia de backtracking.
 
 1. Ajuste o algoritmo anterior, para que retorne todas as soluções possíveis.
+
+
+Problema da Soma dos Subconjuntos
+
+O problema da soma dos subconjuntos é um problema de ciência da computação que
+consiste em verificar se, dado um conjunto de inteiros, existe um subconjunto não-vazio cuja soma é zero.
+
+Por exemplo, no conjunto {−7, −3, −2, 5, 8}, a resposta é sim, pois o subconjunto {−3, −2, 5} resulta em uma soma de zero. 

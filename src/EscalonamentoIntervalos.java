@@ -7,7 +7,7 @@ import java.util.List;
 class Intervalo {
     int inicio;
     int fim;
-    int indiceOriginal; // pra sabermos qual era o índice no input original
+    int indiceOriginal;
 
     public Intervalo(int inicio, int fim, int indiceOriginal) {
         this.inicio = inicio;

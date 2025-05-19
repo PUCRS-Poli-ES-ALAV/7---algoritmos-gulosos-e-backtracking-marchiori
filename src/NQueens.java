@@ -66,6 +66,7 @@ public class NQueens {
                 // EXPLICAÇÃO: No comando das linhas, colocamos um bit 1 na posição ocupada, em que
                 // o uso de (1 << linha) deslocará o bit para a posição. Neste caso, | será responsável pela ativaçào do bit.
 
+                // COLUNAS: Considerar a próxima
                 // LINHAS: Parâmetro linhas vira <linhas | (1 << linha)>
                 // DIAGONAL ESQUERDA: a mesma lógica, mas a coluna e a linha são somados
                 // DIAGONAL DIREITA: a mesma lógica, mas há a subtração da linha e a soma do tamanho do tabuleiro.
@@ -84,7 +85,7 @@ public class NQueens {
     }
 
     public static void main(String[] args) {
-        for (int n = 3; n <= 8; n++) {
+        for (int n = 4; n <= 8; n++) {
             System.out.println("\n---");
             System.out.println("N-Queens com n = " + n);
             long inicio = System.nanoTime();
@@ -98,6 +99,7 @@ public class NQueens {
                 System.out.println("Sem soluções para n = " + n);
             } else {
                 int count = 1;
+
                 for (ArrayList<Integer> solucao : resposta) {
                     System.out.print("--- SOLUÇÃO " + count++ + " --- \n[");
                     for (int i = 0; i < solucao.size(); i++) {
@@ -106,6 +108,7 @@ public class NQueens {
                     }
                     System.out.println("]");
                 }
+
             }
 
             System.out.println("Iterações: " + contador);
