@@ -1,4 +1,4 @@
-package src;
+package src.aula;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class NQueens {
 
     static int contador;
+    static int instrucoes;
 
     // Primeiramente, criaremos um metodo principal para criação da matriz resposta.
     // Após isso, criação de estrutura de dados para representar o tabuleiro. Iniciar da primeira posição.
@@ -20,6 +21,7 @@ public class NQueens {
         ArrayList<Integer> tabuleiro = new ArrayList<>();
 
         contador = 0;
+        instrucoes = 0;
 
         // iniciar a resolução do ponto inicial do tabuleiro.
         backtracking(0, n, tabuleiro, resposta, 0, 0, 0);
@@ -28,6 +30,9 @@ public class NQueens {
     }
 
     public static boolean posicaoValida(int col, int n, int row, int linhas, int diagEsq, int diagDir) {
+
+        instrucoes++;
+
         // linha ocupada
         if (((linhas >> row) & 1) != 0) return false;
 
@@ -44,21 +49,25 @@ public class NQueens {
                              int linhas, int diagEsq, int diagDir) {
 
         contador++;
+        instrucoes++;
 
         // Condição de parada: todas as rainhas estão posicionadas
         if (col == n) {
             resposta.add(new ArrayList<>(tabuleiro));
+            instrucoes++;
             return;
         }
 
         // PASSO 1: Tentar posicionar uma rainha em todos os elementos da coluna atual
         for (int linha = 0; linha < n; linha++) {
+            instrucoes++;
 
             // PASSO 1A: Verificar se a posição é válida
             if (posicaoValida(col, n, linha, linhas, diagEsq, diagDir)) {
 
                 // PASSO 1B: Adicionar a posição da rainha na lista
                 tabuleiro.add(linha);
+                instrucoes++;
 
                 // PASSO 1C: Chamar novamente o metodo para inserir a rainha na proxima coluna
                 // Neste caso, usaremos o conceito de Bit Masking para representar as linhas ocupadas
@@ -79,13 +88,14 @@ public class NQueens {
 
                 // PASSO 1D: Caso a condição não seja suprida, remoção da rainha.
                 tabuleiro.removeLast();
+                instrucoes++;
             }
         }
 
     }
 
     public static void main(String[] args) {
-        for (int n = 4; n <= 8; n++) {
+        for (int n = 4; n <= 6; n++) {
             System.out.println("\n---");
             System.out.println("N-Queens com n = " + n);
             long inicio = System.nanoTime();
@@ -99,7 +109,6 @@ public class NQueens {
                 System.out.println("Sem soluções para n = " + n);
             } else {
                 int count = 1;
-
                 for (ArrayList<Integer> solucao : resposta) {
                     System.out.print("--- SOLUÇÃO " + count++ + " --- \n[");
                     for (int i = 0; i < solucao.size(); i++) {
@@ -109,9 +118,11 @@ public class NQueens {
                     System.out.println("]");
                 }
 
+
             }
 
             System.out.println("Iterações: " + contador);
+            System.out.println("Instruções: " + instrucoes);
             System.out.println("Tempo: " + tempoMicro + "micros");
         }
     }
